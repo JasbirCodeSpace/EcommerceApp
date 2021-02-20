@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&svzi)21v3*3707&c^8s8dxvd4q(+s9lok#rj*a=q9qlamu85m'
+SECRET_KEY = 'p47$qde%l@n7x#y7s@oy+xr-ocf##_76ll&t1$et&om2h2&=w8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products',
+    'store',
+    'account',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -112,10 +114,14 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = "/image/"
+MEDIA_ROOT = BASE_DIR
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
