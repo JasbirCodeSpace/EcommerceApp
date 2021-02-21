@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models.item import Item
-from .models.category import Category
-from .models.order import Order
+from store.models.item import Item
+from store.models.category import Category
+
 
 class ItemList(admin.ModelAdmin):
     list_display = ['name', 'price', 'category']
@@ -12,4 +12,3 @@ class CategoryList(admin.ModelAdmin):
 
 admin.site.register(Item, ItemList)
 admin.site.register(Category, CategoryList)
-admin.site.register(Order)
