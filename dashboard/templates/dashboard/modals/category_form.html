@@ -1,0 +1,29 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-4">
+    
+    <div class="p-4 m-4">
+
+        
+        <div class="col-lg-9 rounded mx-auto border pt-4">
+            <div class="text-center col">
+
+            <div class="display-8">Create Item</div>
+            <hr>
+            </div>
+		    <form method="POST">
+			{% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-12 mb-0">
+                  {{ form.name|as_crispy_field }}
+                </div>
+            </div>
+            <input type="submit" value="Save" class="btn btn-primary mb-2">
+		</form>
+    </div>
+</div>
+</div>
+
+{% endblock content %}

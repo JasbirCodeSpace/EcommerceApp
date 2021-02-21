@@ -1,0 +1,92 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load dashboard_filters %}
+{% block css %}
+    {{block.super}}
+    <style>
+        .table.no-cellpadding td{
+            padding: 0;
+        }
+    </style>
+{% endblock css %}
+{% block content %}
+<div class="container main">
+<div class="row">
+	<div class="col-md-3 my-3">
+		<h5>Categories:</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'category-create'%}">Create Category</a>
+			<table class="table table-sm">
+				<thead>
+				<tr>
+					<th>Category</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for category in categories %}
+					<tr>
+						<td>{{category.name}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'category-update' category.id %}"><i class="fa fa-edit"></i></a></td>
+
+						<td><a class="btn btn-sm btn-danger" href="{% url 'category-delete' category.id  %}"><i class="fa fa-trash"></i></a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-9 my-3">
+		<h5>Products</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block mb-3" href="{% url 'item-create' %}">Create Item</a>
+			<table id="items" class="table table-striped table-bordered " >
+				<thead>
+					<tr>
+                    <th>S.No.</th>
+					<th>Item</th>
+					<th>Image</th>
+					<th>Price</th>
+                    <th>Quantity</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for item in items %}
+					<tr>
+                        <td>{{forloop.counter}}</td>
+						<td>{{item.name}}</td>
+						<td><img src="{{item.image.url}}" alt="" srcset="" height="80px"></td>
+						<td>{{item.price|currency}}</td>
+                        <td>{{item.quantity}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'item-update' item.id %}">Update</a></td>
+
+						<td><a class="btn btn-sm btn-danger" href="{% url 'item-delete' item.id %}">Delete</a></td>
+
+					</tr>
+				{% endfor %}
+			</tbody>
+		
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+
+
+{% endblock content %}
+
+{% block javascript %}
+	{{block.super}}
+	<script>
+			$(document).ready(function() {
+				$('#items').dataTable( {
+
+					"responsive" : true
+					} );
+		} );
+	</script>
+{% endblock javascript %}
