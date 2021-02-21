@@ -1,0 +1,81 @@
+{% extends 'dashboard/base.html' %}
+{% load analytics_filters %}
+{% block css %}
+    {{block.super}}
+{% endblock css%}
+{% block content %}
+<div class="container mt-3">
+        <div class="card-deck">
+            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header">Customers</div>
+                <div class="card-body text-primary">
+                  <h4 class="card-text text-center">{{ customers|count }}</h4>
+                </div>
+              </div>
+            <div class="card border-success mb-3" style="max-width: 18rem;">
+                <div class="card-header">Orders</div>
+                <div class="card-body text-success">
+                  <h4 class="card-text text-center">{{ orders|count }}</h4>
+                </div>
+              </div>
+            <div class="card border-danger mb-3" style="max-width: 18rem;">
+                <div class="card-header">Products</div>
+                <div class="card-body text-danger">
+                  <h4 class="card-text text-center">{{ items|count }}</h4>
+                </div>
+              </div>
+
+            <div class="card border-warning mb-3" style="max-width: 18rem;">
+                <div class="card-header">Categories</div>
+                <div class="card-body text-warning">
+                  <h4 class="card-text text-center">{{ categories|count }}</h4>
+                </div>
+              </div>
+    </div>
+
+    <div class="chart-container" style="position: relative; height:20vh; width:40vw">
+        <canvas id="category-pie"></canvas>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascript%}
+    {{block.super}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        colors = []
+        for(let i=0;i<{{ categories|count }};i++){
+            this.colors.push('#'+Math.floor(Math.random()*16777215).toString(16));
+        }
+
+        var ctx = document.getElementById('category-pie').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',// bar, horizontalBar, pie, line, doughnut, radar, polarArea
+
+            data: {
+                labels: {{ category_pie.labels|safe}},
+                datasets: [{
+                    data: {{ category_pie.chartData|safe}},
+                    backgroundColor: colors
+                }],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "{{category_pie.chartLabel|safe}}",
+                },
+                legend: {
+                    disblay: true,
+                    position: 'right',
+                    labels: {
+                        fontColor: '#333'
+                    }
+                },
+                
+
+            }
+
+
+        });
+    </script>
+{% endblock javascript%}
