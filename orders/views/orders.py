@@ -4,6 +4,7 @@ from account.models.customer import Customer
 from store.models.item import Item
 from store.models.category import Category
 from orders.models.order import Order
+from orders.models.order_item import OrderItem
 from django.views import View
 
 class Orders(View):
@@ -13,7 +14,7 @@ class Orders(View):
             return render(request, 'orders/seller.html', {'orders':orders})
         else:
             customer_id = request.session.get('user_id')
-            orders = Order.get_orders_by_customer_id(customer_id)
+            orders = Order.get_orders_by_customer_id(customer_id) 
             return render(request, 'orders/customer.html', {'orders': orders})
     def post(self, request):
         pass

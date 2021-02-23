@@ -3,10 +3,8 @@ from account.models import Customer
 from store.models.item import Item
 
 class Order(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-    price = models.FloatField()
+    total_price = models.FloatField()
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False)
     address = models.CharField(
@@ -35,7 +33,10 @@ class Order(models.Model):
     )
 
     def place_order(self):
-        self.save()
+        try:
+            self.save()
+        except Exception:
+            return False
         return True
 
     @staticmethod
