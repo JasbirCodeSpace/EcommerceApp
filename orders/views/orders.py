@@ -17,4 +17,9 @@ class Orders(View):
             orders = Order.get_orders_by_customer_id(customer_id) 
             return render(request, 'orders/customer.html', {'orders': orders})
     def post(self, request):
-        pass
+        if request.session.get('user_type') == 'seller':
+            order_id = request.POST['id']
+            order = Order.objects.filter(pk = order_id)
+            if order:
+                order.update(status = True)
+        return redirect('orders')

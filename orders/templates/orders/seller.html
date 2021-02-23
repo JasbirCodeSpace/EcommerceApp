@@ -10,10 +10,12 @@
              <thead>
                  <tr>
                      <th>Order</th>
+                     <th>Customer</th>
                      <th>Total</th>
                      <th>Date & Time</th>
                      <th>Status</th>
                      <th>View</th>
+                     <th>Update</th>
                  </tr>
              </thead>
              <tbody>
@@ -22,6 +24,7 @@
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{order.total_price|currency}}</td>
+                <td>{{order.customer.email}}</td>
                 <td>{{order.date|date:'Y-m-d H:i'}}</td>
                 <td>
                     {% if order.status %}
@@ -31,9 +34,16 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form target="_blank" action="view-order" method="GET">
+                    <form target="_blank" action="{% url 'view-order' %}" method="GET">
                         <input type="hidden" name="id" value="{{order.id}}">
                         <input type="submit" value="View" class="btn btn-sm btn-primary"/>
+                    </form>
+                </td>
+                <td>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{order.id}}">
+                        <input type="submit" value="Update" class="btn btn-sm btn-primary"/>
                     </form>
                 </td>
             </tr>
