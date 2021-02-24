@@ -32,9 +32,23 @@
                 </div>
               </div>
     </div>
-
-    <div class="chart-container" style="position: relative; height:20vh; width:40vw">
-        <canvas id="category-pie"></canvas>
+    <div class="container">
+      <div class="row m-2">
+        <div class="col-md-6">
+          <canvas id="category-pie"></canvas>
+        </div>
+        <div class="col-md-6">
+          <canvas id="orders-pie"></canvas>
+        </div>
+      </div>
+      <div class="row m-2">
+        <div class="col-lg-6">
+          <canvas id="orders-bar"></canvas>
+        </div>
+        <div class="col-lg-6">
+          <canvas id="orders-line"></canvas>
+        </div>
+      </div>
     </div>
 </div>
 {% endblock content %}
@@ -43,20 +57,22 @@
     {{block.super}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
-        colors = []
-        for(let i=0;i<{{ categories|count }};i++){
-            this.colors.push('#'+Math.floor(Math.random()*16777215).toString(16));
-        }
+        let categories_colors = generate_colors({{ categories|count }}, true)
+        let orders_colors = generate_colors(2, true)
+        let orders_trend_colors = generate_colors({{ orders_bar.count }}, true)
 
-        var ctx = document.getElementById('category-pie').getContext('2d');
-        var myChart = new Chart(ctx, {
+        let categorie_chart = document.getElementById('category-pie').getContext('2d');
+        let orders_chart = document.getElementById('orders-pie').getContext('2d');
+        let orders_bar = document.getElementById('orders-bar').getContext('2d')
+        let orders_line = document.getElementById('orders-line').getContext('2d')
+        let pieChart1 = new Chart(categorie_chart, {
             type: 'doughnut',// bar, horizontalBar, pie, line, doughnut, radar, polarArea
-
+            fillOpacity: .5,
             data: {
                 labels: {{ category_pie.labels|safe}},
                 datasets: [{
                     data: {{ category_pie.chartData|safe}},
-                    backgroundColor: colors
+                    backgroundColor: categories_colors
                 }],
             },
             options: {
@@ -71,11 +87,144 @@
                         fontColor: '#333'
                     }
                 },
+                responsive: true,
                 
 
             }
-
-
         });
+        let pieChart2 = new Chart(orders_chart, {
+            type: 'doughnut',// bar, horizontalBar, pie, line, doughnut, radar, polarArea
+            fillOpacity: .5,
+            data: {
+                labels: {{ orders_pie.labels|safe}},
+                datasets: [{
+                    data: {{ orders_pie.chartData|safe}},
+                    backgroundColor: orders_colors
+                }],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "{{orders_pie.chartLabel|safe}}",
+                },
+                legend: {
+                    disblay: true,
+                    position: 'right',
+                    labels: {
+                        fontColor: '#333'
+                    }
+                },
+                responsive: true,
+                
+
+            }
+        });
+
+        var myBarChart = new Chart(orders_bar, {
+          type: 'bar',
+          data: {
+                labels: {{ orders_bar.labels|safe }},
+                datasets: [{
+                    label: "Orders",
+                    data: {{ orders_bar.dict|safe }},
+                    backgroundColor: orders_colors
+                }],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "{{orders_bar.chartLabel|safe}}",
+                },
+                legend: {
+                  display: false,
+                },
+                responsive: true,
+                scales: {
+                  xAxes: [{
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Date'
+                      },
+                      beginAtZero: true,
+                      ticks: {
+                        autoSkip: false
+                      }
+                  }],
+                    yAxes: [{
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Orders'
+                      },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+                }
+              }
+      });
+
+
+      var lineGraph = new Chart(orders_line, {
+          type: 'line',
+          data: {
+                labels: {{ orders_bar.labels|safe }},
+                datasets: [{
+                    label: "Orders",
+                    data: {{ orders_bar.chartData|safe }},
+                    backgroundColor: "transparent",
+                    borderColor: generate_colors(1, false)
+                }],
+            },
+            options: {
+              elements: {
+                  line: {
+                      tension: 0
+                      }
+                },
+                title: {
+                    display: true,
+                    text: "Orders Trend",
+                },
+                legend: {
+                  display: false,
+                },
+                responsive: true,
+                scales: {
+                  xAxes: [{
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Date'
+                      },
+                      beginAtZero: true,
+                      ticks: {
+                        autoSkip: false
+                      }
+                  }],
+                    yAxes: [{
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Orders'
+                      },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+                }
+              }
+      });
+        function generate_colors(size, t) {
+          let colors = []
+          let op = t===true?0.5:1;
+
+          for(let i=0;i<size;i++){
+            let r = Math.floor(Math.random() * 255);
+            let g = Math.floor(Math.random() * 255);
+            let b = Math.floor(Math.random() * 255);
+            colors.push("rgba(" + r + "," + g + "," + b + ","+op+")")
+          }
+          return colors
+        }
+
+      
     </script>
 {% endblock javascript%}
