@@ -46,6 +46,7 @@ class CustomerLogin(View):
                 if check_password(password, customer.password):
                     request.session['user_id'] = customer.id
                     request.session['user_type'] = 'customer'
+                    request.session['user_name'] = customer.first_name +" "+ customer.last_name
                     return redirect('home')
                 else:
                     error_message = "Incorrect password"

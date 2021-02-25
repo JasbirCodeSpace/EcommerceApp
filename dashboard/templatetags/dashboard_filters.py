@@ -23,3 +23,5 @@ def is_customer(request):
         if request.session.get('user_type')=="customer":
             return True
     return False
+
+

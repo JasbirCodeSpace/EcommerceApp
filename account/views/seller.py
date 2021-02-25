@@ -47,6 +47,7 @@ class SellerLogin(View):
                 if check_password(password, seller.password):
                     request.session['user_id'] = seller.id
                     request.session['user_type'] = 'seller'
+                    request.session['user_name'] = seller.first_name +" "+ seller.last_name
                     return redirect('home')
                 else:
                     error_message = "Incorrect password"

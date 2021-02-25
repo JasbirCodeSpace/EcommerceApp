@@ -33,22 +33,30 @@
                 </h4>
                 <p>{{item.price|currency}}</p>
               </div>
-              <div class="card-footer no-gutters">
+              <div class="card-footer">
 				{% if item|is_item_in_cart:request.session.cart %}
-				<div class="row no-gutters">
-					<form action="/#{{item.id}}" class="col-2 " method="post">
+				<div class="row">
+				<div class="col-3">
+					<form action="/#{{item.id}}" method="post">
 						{% csrf_token %}
 						<input hidden type="text" name='item' value='{{item.id}}'>
 						<input hidden type="text" name='remove' value='True'>
-						<input type="submit" value=" - " class="btn btn-block btn-light border-right">
+						<button type="submit" class="btn btn-sm btn-primary border-right">
+							<i class="fa fa-minus"></i>
+						</button>
 					</form>
-					<div class="text-center col">{{item|item_quantity_in_cart:request.session.cart}} in Cart</div>
-					<form action="/#{{item.id}}" class="col-2 " method="post">
+				</div>
+				<div class="text-center m-auto col-6 text-primary font-weight-bold">{{item|item_quantity_in_cart:request.session.cart}} in Cart</div>
+				<div class="col-3">
+					<form action="/#{{item.id}}" method="post">
 						{% csrf_token %}
 						<input hidden type="text" name='item' value='{{item.id}}'>
 						<input hidden type="text" name='remove' value='False'>
-						<input type="submit" value=" + " class="btn btn-block btn-light border-left">
+						<button type="submit" class="btn btn-sm btn-primary border-left">
+							<i class="fa fa-plus"></i>
+						</button>
 					</form>
+				</div>
 				</div>
 				{% else %}
 				<form action="/#{{item.id}}" method="POST" class="btn-block">
