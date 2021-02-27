@@ -128,7 +128,7 @@ USE_TZ = False
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/'
 MEDIA_URL = "/image/"
-MEDIA_ROOT = BASE_DIR
+MEDIA_ROOT = os.path.join(BASE_DIR,'uploads')
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 django_heroku.settings(locals())
