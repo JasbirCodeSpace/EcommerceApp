@@ -5,7 +5,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=30)
     phone = models.CharField(max_length=13)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=255)
     date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
     last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
 
