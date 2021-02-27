@@ -62,7 +62,7 @@ def orders_trend_chart(orders):
     labels = []
     chartLabel = "Orders per day"
     for data in result:
-        labels.append(data.get('x'))
+        labels.append(str(data.get('x')))
         chartData.append(data.get('y'))
     data = {
         "labels": labels,
